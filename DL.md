@@ -268,7 +268,7 @@
 
   - 反向传播会根据前向传播计算的**中间值**计算**张量的梯度**
 
-![image-20250416233353334](C:\Users\86135\AppData\Roaming\Typora\typora-user-images\image-20250416233353334.png)
+![image-20250416233353334](E:\Screenshot\Typora\image-20250416233353334.png)
 
 ## Forward pass（前向传播）
 

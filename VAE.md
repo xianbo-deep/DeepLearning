@@ -31,10 +31,10 @@
   - 解码器将$z$空间中的每个点映射到$x$空间中的概率分布
   - 最终的$P(x)$正是这些单个正态分布的积分(叠加)
 
-![image-20250430233601234](C:\Users\86135\AppData\Roaming\Typora\typora-user-images\image-20250430233601234.png)
+![image-20250430233601234](E:\Screenshot\Typora\image-20250430233601234.png)
 
 - **Decoder：**将潜在变量$z$作为输入，通过神经网络$(NN)$输出条件分布$P(x|z)$的参数，即均值$\mu(z)$和方差$\sigma(z)$。这决定了给定z时x的概率分布**$P(x|z)$**
-- **Encoder：**将观测数据x作为输入，通过另一个神经网络$(NN')$输出近似后验分布$q(z|x)$的参数，即均值$\mu'(x)$和方差$\sigma'(x)$。这用于近似真实但难以计算的后验分布**$P(z|x)$**![image-20250501000147212](C:\Users\86135\AppData\Roaming\Typora\typora-user-images\image-20250501000147212.png)
+- **Encoder：**将观测数据x作为输入，通过另一个神经网络$(NN')$输出近似后验分布$q(z|x)$的参数，即均值$\mu'(x)$和方差$\sigma'(x)$。这用于近似真实但难以计算的后验分布**$P(z|x)$**![image-20250501000147212](E:\Screenshot\Typora\image-20250501000147212.png)
 
 
 
@@ -51,7 +51,7 @@
 > - 从X到Z相当于给定X求Z的条件概率P(Z|X)
 > - 从Z到X相当于给定Z求X的条件概率P(X|Z)
 >
-> ![image-20250502115738249](C:\Users\86135\AppData\Roaming\Typora\typora-user-images\image-20250502115738249.png)
+> ![image-20250502115738249](E:\Screenshot\Typora\image-20250502115738249.png)
 >
 > **完整的模型表示是二者的联合概率分布 $P(X,Z)$**
 >
