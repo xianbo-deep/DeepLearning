@@ -589,7 +589,72 @@ $$
 
 ### RoPE（旋转位置编码）
 
-结合了旋转位置编码和相对位置编码，**左乘一个旋转矩阵**
+结合了旋转位置编码和相对位置编码，**对每个Q和K左乘一个旋转矩阵**
+
+在正常的注意力分数计算过程当中，我们是这么计算的
+$$
+Attention\_score = q_m\cdot k_n^T
+$$
+但是为了融入相对位置信息，我们让q和k分别乘上一个旋转矩阵
+$$
+q^{rot} = q_m\cdot R_m \\
+k^{rot} = k_n \cdot R_n
+$$
+所以：
+$$
+\begin{aligned}
+q^{rot}\cdot k^{rot} &=  q_mR_mR_n^Tk_n^T \\
+ &= q_mR_mR_{-n}k_n^T \\
+ &= q_mR_{m-n}k_n^T
+ \end{aligned}
+$$
+可见其将**位置差信息融入**$Q、K$矩阵，同时由于**RoPE**的特性，模型可以**外推自己的上下文能力**并且还保持一定精度
+
+1. **旋转矩阵周期性**
+
+   对于过大的相对位置模型可能从未见过，但是由于**旋转矩阵具有周期性**，可以**使这个相对位置落在训练过的范围内**，从而增强泛化能力
+
+2. **线性位置差**
+
+​	无论绝对位置 $m,n$ 多大，注意力分数仅依赖相对位置$m-n$
+
+
+
+**旋转矩阵的构造**
+
+- 对于维度为d的向量，RoPE将向量分成$d/2$组，每组应用一个**二维旋转矩阵**，**d一般都是偶数**
+
+$$
+R_{\theta,m} = 
+\begin{bmatrix}
+\cos m\theta_{1} & -\sin m\theta_{1} & 0 & \cdots & 0 \\
+\sin m\theta_{1} & \cos m\theta_{1} & 0 & \cdots & 0 \\
+0 & 0 & \cos m\theta_{2} & -\sin m\theta_{2} & 0 \\
+0 & 0 & \sin m\theta_{2} & \cos m\theta_{2} & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+\end{bmatrix}
+$$
+
+- 每组二维向量**独立乘以一个二维旋转矩阵**
+
+$$
+
+\begin{bmatrix}
+x_{i}' \\ 
+x_{i+1}'
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cos m\theta_i & -\sin m\theta_i \\
+\sin m\theta_i & \cos m\theta_i
+\end{bmatrix}
+\begin{bmatrix}
+x_i \\
+x_{i+1}
+\end{bmatrix}
+$$
+
+
 
 已知位置差$(m-n)$的旋转矩阵：
 
